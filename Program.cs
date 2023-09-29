@@ -1,6 +1,7 @@
 ﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.EventArgs;
+using SaulGoodman.commands;
 
 namespace SaulGoodman
 {
@@ -23,6 +24,18 @@ namespace SaulGoodman
 
             bot = new DiscordClient(discordConfig);
             bot.Ready += BotOnReady;
+
+            var commandsConfig = new CommandsNextConfiguration()
+            {
+                StringPrefixes = new string[] { jsonReader.prefix },
+                EnableMentionPrefix = true,
+                CaseSensitive = false,
+                EnableDefaultHelp = false
+            };
+
+            commands = bot.UseCommandsNext(commandsConfig);
+
+            commands.RegisteredCommands<TestCommands>();
 
             await bot.ConnectAsync();
             await Task.Delay(-1);
